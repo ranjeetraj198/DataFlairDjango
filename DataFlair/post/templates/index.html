@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Like Post App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'homepage' %}">DataFlair</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'otherpage' %}">Other</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="display-3 color-red">
+    <center>DataFlair AJAX Tutorial<br>Post APP</center>
+</div>
+{% for post in posts %}
+<div class='container jumbotron'>
+    <h3 class="display-5">{{ forloop.counter }}. {{ post.post_heading }}</h3>
+    <p class="lead">{{ post.post_text }} </p>
+
+    <p type="text/css" class="container">Author : {{ post.post_author }}</p>
+    <a class="likebutton btn btn-primary btn-lg" id="like{{ post.id }}" href="#"
+       data-catid="{{ post.id }}">Like</a>  <p id="message{{post.id}}">
+</p>
+</div>
+{% endfor %}
+<script type="text/javascript">
+$('.likebutton').click(function(){
+var id;
+id = $(this).attr("data-catid");
+$.ajax(
+{
+    type:"GET",
+    url: "like",
+    data:{
+             post_id: id
+},
+success: function( data )
+{
+    $( '#like'+ id ).removeClass('btn btn-primary btn-lg');
+    $( '#like'+ id ).addClass('btn btn-success btn-lg'); } }) });
+
+
+</script>
+</body>
+</html>
